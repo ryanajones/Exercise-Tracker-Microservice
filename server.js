@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const uniqid = require('uniqid');
 
+/* mongoose.Promise = global.Promise;
+ */
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -19,12 +21,15 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Database schema
-const exerciseRecordsSchema = new mongoose.Schema({
-  originalURL: String,
-  shortURL: String,
+const exerciseRecordSchema = new mongoose.Schema({
+  username: String,
+  id: String,
+  description: String,
+  duration: String,
+  date: String,
 });
 
-const exerciseRecords  = mongoose.model('exerciseRecords', exerciseRecordsSchema);
+const ExerciseRecords = mongoose.model('exerciseRecord', exerciseRecordSchema);
 
 // App middleware
 app.use(cors());
@@ -34,12 +39,38 @@ app.get('/', function (req, res) {
   res.sendFile(`${process.cwd()}/views/index.html`);
 });
 
-// Response for POST request
+// Response to create new user POST
 app.post('/api/exercise/new-user', async (req, res) => {
-  const { url } = req.body;
+  const { username } = req.body;
   const uniqueID = uniqid();
-  
-  
+
+  try {
+    let findOne = await ExerciseRecords.findOne({
+      username,
+    });
+    console.log(findOne);
+    if (findOne) {
+      res.json({
+        error: 'Username already used',
+      });
+    } else {
+      findOne = new ExerciseRecords({ username, id: uniqueID });
+      await findOne.save();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Response to add exercises POST
+app.post('/api/exercise/add', async (req, res) => {
+  const { userId, description, duration, date } = req.body;
+  try {
+    let findOne = await ExerciseRecords.findOne({
+      id: userId
+    })
+
+  }
 });
 
 // Redirect shortened URL to Original URL
