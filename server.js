@@ -23,7 +23,6 @@ mongoose.connect(process.env.MONGO_URI, {
 // Database schema
 const exerciseRecordSchema = new mongoose.Schema({
   username: String,
-  id: String,
   description: String,
   duration: String,
   date: String,
@@ -48,14 +47,17 @@ app.post('/api/exercise/new-user', async (req, res) => {
     let findOne = await ExerciseRecords.findOne({
       username,
     });
-    console.log(findOne);
     if (findOne) {
       res.json({
         error: 'Username already used',
       });
     } else {
-      findOne = new ExerciseRecords({ username, id: uniqueID });
+      findOne = new ExerciseRecords({ username });
       await findOne.save();
+      res.json({
+        username: findOne.username,
+        id: findOne._id,
+      });
     }
   } catch (err) {
     console.log(err);
@@ -65,16 +67,28 @@ app.post('/api/exercise/new-user', async (req, res) => {
 // Response to add exercises POST
 app.post('/api/exercise/add', async (req, res) => {
   const { userId, description, duration, date } = req.body;
-  try {
-    let findOne = await ExerciseRecords.findOne({
-      id: userId
-    })
 
+  try {
+    const findOne = await ExerciseRecords.findOne({
+      _id: userId,
+    });
+    if (findOne) {
+      ExerciseRecords.findOneAndUpdate(
+        { _id: userId },
+        { description, duration, date },
+        { new: true },
+        (err) => {
+          if (err) return console.log(err);
+        }
+      );
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
 // Redirect shortened URL to Original URL
-app.get('/api/shorturl/:shortURL?', async (req, res) => {
+/* app.get('/api/shorturl/:shortURL?', async (req, res) => {
   try {
     const urlParams = await URL.findOne({
       shortURL: req.params.shortURL,
@@ -88,6 +102,7 @@ app.get('/api/shorturl/:shortURL?', async (req, res) => {
     res.status(500).json('Server error..');
   }
 });
+ */
 // Listens for connections
 app.listen(port, function () {
   console.log('Node.js listening ...');
