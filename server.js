@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const uniqid = require('uniqid');
+const e = require('express');
 
 /* mongoose.Promise = global.Promise;
  */
@@ -84,25 +85,23 @@ app.post('/api/exercise/add', async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-  }
-});
-
-// Redirect shortened URL to Original URL
-/* app.get('/api/shorturl/:shortURL?', async (req, res) => {
-  try {
-    const urlParams = await URL.findOne({
-      shortURL: req.params.shortURL,
-    });
-    if (urlParams) {
-      return res.redirect(urlParams.originalURL);
-    }
-    return res.status(404).json('No URL found');
-  } catch (err) {
-    console.log(err);
     res.status(500).json('Server error..');
   }
 });
- */
+
+app.get('/api/exercise/users', async (req, res) => {
+  try {
+    const allUsers = await ExerciseRecords.find({});
+    const userNameAndId = allUsers.map((el) => ({
+      username: el.username,
+      _id: el._id,
+    }));
+    res.json(userNameAndId);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // Listens for connections
 app.listen(port, function () {
   console.log('Node.js listening ...');
