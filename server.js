@@ -24,9 +24,13 @@ mongoose.connect(process.env.MONGO_URI, {
 // Database schema
 const exerciseRecordSchema = new mongoose.Schema({
   username: String,
-  description: String,
-  duration: String,
-  date: String,
+  log: [
+    {
+      description: String,
+      duration: String,
+      date: String,
+    },
+  ],
 });
 
 const ExerciseRecords = mongoose.model('exerciseRecord', exerciseRecordSchema);
@@ -69,6 +73,20 @@ app.post('/api/exercise/new-user', async (req, res) => {
 app.post('/api/exercise/add', async (req, res) => {
   const { userId, description, duration, date } = req.body;
 
+  // Handle date here
+  let modifiedDate;
+  if (date) {
+    modifiedDate = new Date().toDateString(date);
+  } else {
+    modifiedDate = new Date().toDateString();
+  }
+
+  const log = {
+    description,
+    duration,
+    date: modifiedDate,
+  };
+
   try {
     const findOne = await ExerciseRecords.findOne({
       _id: userId,
@@ -76,12 +94,24 @@ app.post('/api/exercise/add', async (req, res) => {
     if (findOne) {
       ExerciseRecords.findOneAndUpdate(
         { _id: userId },
-        { description, duration, date },
+        {
+          $push: {
+            log,
+          },
+        },
         { new: true },
         (err) => {
           if (err) return console.log(err);
         }
       );
+      const { username } = findOne;
+      res.json({
+        userId,
+        username,
+        description,
+        duration,
+        date: modifiedDate,
+      });
     }
   } catch (err) {
     console.log(err);
@@ -97,6 +127,15 @@ app.get('/api/exercise/users', async (req, res) => {
       _id: el._id,
     }));
     res.json(userNameAndId);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get('/api/exercise/log?', async (req, res) => {
+  const userParam = req.params.userId;
+  try {
+    console.log(req.query);
   } catch (err) {
     console.log(err);
   }
