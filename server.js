@@ -76,7 +76,7 @@ app.post('/api/exercise/add', async (req, res) => {
   // Handle date here
   let modifiedDate;
   if (date) {
-    modifiedDate = new Date().toDateString(date);
+    modifiedDate = new Date(date).toDateString();
   } else {
     modifiedDate = new Date().toDateString();
   }
@@ -133,9 +133,41 @@ app.get('/api/exercise/users', async (req, res) => {
 });
 
 app.get('/api/exercise/log?', async (req, res) => {
-  const userParam = req.params.userId;
+  const { userId, from, to, limit } = req.query;
   try {
-    console.log(req.query);
+    const findOne = await ExerciseRecords.findOne({ _id: userId });
+    if (findOne) {
+      let { _id, username, log } = findOne;
+      // Filter exercise log from certain date
+      if (from) {
+        const fromDate = new Date(from).toDateString();
+        log = log.filter((el) => el.date >= fromDate);
+      }
+      // Filter exercise log to certain date
+      if (to) {
+        const toDate = new Date(to).toDateString();
+        log = log.filter((el) => el.date <= toDate);
+      }
+      // Filter exercise log to not exceed limit
+      if (limit) {
+        log = log.filter((el) => log.indexOf(el) <= limit - 1);
+      }
+      const newLog = [];
+      log.map((el) =>
+        newLog.push({
+          description: el.description,
+          duration: el.duration,
+          date: el.date,
+        })
+      );
+      const count = newLog.length;
+      res.json({
+        _id,
+        username,
+        count,
+        log: newLog,
+      });
+    }
   } catch (err) {
     console.log(err);
   }
