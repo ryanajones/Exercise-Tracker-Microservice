@@ -5,7 +5,6 @@ const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const uniqid = require('uniqid');
 const e = require('express');
 
 /* mongoose.Promise = global.Promise;
@@ -20,15 +19,25 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set('useFindAndModify', false);
 
 // Database schema
 const exerciseRecordSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    required: true,
+  },
   log: [
     {
-      description: String,
-      duration: String,
-      date: String,
+      description: {
+        type: String,
+      },
+      duration: {
+        type: Number,
+      },
+      date: {
+        type: Date,
+      },
     },
   ],
 });
@@ -46,7 +55,6 @@ app.get('/', function (req, res) {
 // Response to create new user POST
 app.post('/api/exercise/new-user', async (req, res) => {
   const { username } = req.body;
-  const uniqueID = uniqid();
 
   try {
     let findOne = await ExerciseRecords.findOne({
@@ -60,8 +68,8 @@ app.post('/api/exercise/new-user', async (req, res) => {
       findOne = new ExerciseRecords({ username });
       await findOne.save();
       res.json({
+        _id: findOne._id,
         username: findOne.username,
-        id: findOne._id,
       });
     }
   } catch (err) {
@@ -70,9 +78,8 @@ app.post('/api/exercise/new-user', async (req, res) => {
 });
 
 // Response to add exercises POST
-app.post('/api/exercise/add', async (req, res) => {
-  const { userId, description, duration, date } = req.body;
-
+app.post('/api/exercise/add', (req, res) => {
+  const { userId: _id, description, duration, date } = req.body;
   // Handle date here
   let modifiedDate;
   if (date) {
@@ -81,42 +88,39 @@ app.post('/api/exercise/add', async (req, res) => {
     modifiedDate = new Date().toDateString();
   }
 
+  console.log(modifiedDate);
   const log = {
     description,
-    duration,
+    duration: Number(duration),
     date: modifiedDate,
   };
 
-  try {
-    const findOne = await ExerciseRecords.findOne({
-      _id: userId,
-    });
-    if (findOne) {
-      ExerciseRecords.findOneAndUpdate(
-        { _id: userId },
-        {
-          $push: {
-            log,
-          },
-        },
-        { new: true },
-        (err) => {
-          if (err) return console.log(err);
-        }
-      );
-      const { username } = findOne;
-      res.json({
-        userId,
-        username,
-        description,
-        duration,
-        date: modifiedDate,
-      });
+  ExerciseRecords.findOneAndUpdate(
+    { _id },
+    {
+      $push: {
+        log,
+      },
+    },
+    { new: true },
+    (err, userFound) => {
+      if (userFound == null) {
+        if (err) return console.log(err);
+        res.json({
+          error: 'user not found',
+        });
+      } else {
+        const { username } = userFound;
+        res.json({
+          username,
+          description,
+          duration: Number(duration),
+          _id,
+          date: modifiedDate,
+        });
+      }
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json('Server error..');
-  }
+  );
 });
 
 app.get('/api/exercise/users', async (req, res) => {
@@ -140,12 +144,12 @@ app.get('/api/exercise/log?', async (req, res) => {
       let { _id, username, log } = findOne;
       // Filter exercise log from certain date
       if (from) {
-        const fromDate = new Date(from).toDateString();
+        const fromDate = new Date(from);
         log = log.filter((el) => el.date >= fromDate);
       }
       // Filter exercise log to certain date
       if (to) {
-        const toDate = new Date(to).toDateString();
+        const toDate = new Date(to);
         log = log.filter((el) => el.date <= toDate);
       }
       // Filter exercise log to not exceed limit
