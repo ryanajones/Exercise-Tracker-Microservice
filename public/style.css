@@ -1,64 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
 
-* {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
 body {
-  font-family:sans-serif;
-  margin: 25px;
-  color: #222;
-  background-color: #f5f5f5;
+  margin: 0;
+  background-color: #131513;
+  font-family: "IBM Plex Mono", monospace;
 }
 
-h1 {
-  font-weight: bold;
-  
+.mainNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 90px;
+  background-color: #00bb00;
+  font: 30px "IBM Plex Mono", monospace;
 }
 
-.bold {
-  font-weight: bold;
+.mainTitle {
+  padding-left: 20px;
 }
 
-p {
-  max-width: 900px;
+.fa-running {
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  color: #f6f7f9;
 }
 
-form {
-  margin-bottom: 25px;
-  padding: 15px;
-  background-color: #87D37C;
-  display: inline-block;
-  width: 100%;
-  max-width: 340px;
-  border-radius: 5px;
+.logoBackground {
+  position: absolute;
+  left: 316px;
+  top: 27px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: black;
 }
 
-input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 16px;
+.subTitle {
+  color: #f6f7f9;
+  font: 14px "IBM Plex Mono", monospace;
 }
 
-input[type=submit] {
-  font-size: 16px;
-  border-radius: 3px;
-  background-color: #E4F1FE;
-  border: 1px solid grey;
-  box-shadow: 2px 2px #999;
-  cursor: pointer;
+.subNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  background-color: #003b00;
 }
 
-input[type=submit]:hover {
-  background-color: #FFFEC4;
+.container {
+  width: 100vw;
+  height: 100vh;
 }
 
-code {
-  font-family: monospace;
-  font-size: 1.2em;
-  background-color: #FFFEC4;
-  padding: 2px;
+.app {
+  margin: 70px auto 0 auto;
+  width: 335px;
+  height: 700px;
+  border-radius: 10px;
+  background-color: grey;
 }
