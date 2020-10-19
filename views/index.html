@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exercise Tracker Microservice</title>
-  <link rel="stylesheet" href="/public/style.css">
+  <link rel="stylesheet" href="./main.css">
   <script src="https://kit.fontawesome.com/6aab1b61bc.js" crossorigin="anonymous"></script>
 </head>
 
@@ -15,7 +15,9 @@
       <i class="fas fa-running"></i>
     </div>
     <div class="mainTitle">
-      Exercise Tracker Microservice
+      <h1>
+        Exercise Tracker Microservice
+      </h1>
     </div>
   </div>
   <div class="subNav">
@@ -24,11 +26,24 @@
   <div class="container">
     <div class="app">
       <form action="/api/exercise/new-user" method="post">
-        <h3>Create A New User</h3>
+        <h3 class="highlight">Create A New User</h3>
         <input id="usernameInput" type="text" name="username" placeholder="username">
         <input type="submit" value="Submit">
       </form>
-      
+
+      <form action="/api/exercise/add" method="post">
+        <h3 class="highlight">Add Exercise</h3>
+        <input id="userId" type="text" name="userId" placeholder="userId*">
+        <input id="description" type="text" name="description" placeholder="description*">
+        <input id="duration" type="text" name="duration" placeholder="date (yyy-mm-dd)">
+        <input type="submit" value="Submit">
+      </form>
+      <section>
+        <h3 class="highlight">GET user's exercise log</h3>
+        <code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code>
+        <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
+        <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
+      </section>
     </div>
   </div>
 </body>

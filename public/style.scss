@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #131513;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.mainNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 90px;
+  background-color: #00bb00;
+  font: 30px "IBM Plex Mono", monospace;
+}
+.mainNav h1 {
+  font: 30px "IBM Plex Mono", monospace;
+}
+.mainTitle {
+  position: relative;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.fa-running {
+  position: relative;
+  left: 8px;
+  top: 0px;
+  color: #f6f7f9;
+}
+
+.logoBackground {
+  position: relative;
+  right: 25px;
+  top: 2px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: black;
+}
+
+.subTitle {
+  position: relative;
+  right: 10px;
+  color: #f6f7f9;
+  font: 14px "IBM Plex Mono", monospace;
+}
+
+.subNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  background-color: #003b00;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 70px auto 0 auto;
+  padding: 20px;
+  width: 345px;
+  height: 700px;
+  border-radius: 10px;
+  background-color: grey;
+}
+
+.highlight {
+  padding: 2px 0px 1px;
+  background-image: linear-gradient(
+    transparent 0%,
+    transparent calc(50% - 9px),
+    rgba(0, 255, 0, 0.35) calc(50% - 9px),
+    rgba(0, 255, 0, 0.35) 100%
+  );
+  transition: all 120ms ease-in-out 0s;
+  background-size: 100% 200%;
+  text-align: center;
+}
+
+h3 {
+  font-size: 22px;
+  text-transform: uppercase;
+  word-wrap: nowrap;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+input {
+  text-align: left;
+  margin: 2px;
+}
+
+input:submit {
+  margin: 20px;
+}
