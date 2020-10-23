@@ -24,59 +24,43 @@
     <div class="subTitle">FlipTheSwitch</div>
   </div>
   <div class="container">
-    <div class="app">
-      <form action="/api/exercise/new-user" method="post">
-        <h3 class="highlight">Create A New User</h3>
-        <input id="usernameInput" type="text" name="username" placeholder="username">
-        <input type="submit" value="Submit">
-      </form>
-
-      <form action="/api/exercise/add" method="post">
-        <h3 class="highlight">Add Exercise</h3>
-        <input id="userId" type="text" name="userId" placeholder="userId*">
-        <input id="description" type="text" name="description" placeholder="description*">
-        <input id="duration" type="text" name="duration" placeholder="date (yyy-mm-dd)">
-        <input type="submit" value="Submit">
-      </form>
-      <section>
+    <div class="newUser">
+      <div class="formWrapper">
+        <form action="/api/exercise/new-user" method="post">
+          <h3 class="highlight">Create A New User</h3>
+          <input class="inputStyle" id="usernameInput" type="text" name="username" placeholder="username">
+          <input type="submit" value="Submit">
+        </form>
+        <form action="/api/exercise/add" method="post">
+          <h3 class="highlight">Add Exercise</h3>
+          <input class="inputStyle" id="userId" type="text" name="userId" placeholder="userId*">
+          <input class="inputStyle" id="description" type="text" name="description" placeholder="description*">
+          <input class="inputStyle" id="duration" type="text" name="duration" placeholder="duration* (mins.)">
+          <input class="inputStyle" id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+      <div class="getLog">
         <h3 class="highlight">GET User's Exercise Log</h3>
-        <div class="exampleWrapper">
-          <div class="backgroundColorLight"><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code>
-          </div>
-          <div class="backgroundColorLight" style="border-top: none;">
-            <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
-          </div>
-          <div class="backgroundColorLight" style="border-top: none;">
-            <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
-          </div>
-          <div style="border-top: none;"></div>
+        <div class="infoBoxDiv"><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code>
         </div>
-      </section>
+        <div class="infoBoxDiv" style="border-top: none;">
+          <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
+        </div>
+        <div class="infoBoxDiv" style="border-top: none;">
+          <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="example">
+      <h3 class="highlight">Example Getting Log</h3>
+      <div class="infoBoxDiv" style="width: 700px;">
+        <code>[your url here] /api/exercise/log?userId=5f90a6f460a38c002ed013d9&from=09/20/2020&to=10/20/2020&limit=1</code>
+      </div>
+      <div class="infoBoxDiv" style="width: 700px;">
+        <code>{"_id":"5f90a6f460a38c002ed013d9","username":"ryanajones","count":1,"log":[{"description":"run","duration":30,"date":"Sat Oct 10 2020"}]}</code>
+      </div>
+    </div>
 </body>
 
 </html>
-
-<!--  <div class=" container">
-            <h1>Exercise tracker</h1>
-            <form action="/api/exercise/new-user" method="post">
-              <h3>Create a New User</h3>
-              <p><code>POST /api/exercise/new-user</code></p>
-              <input id="uname" type="text" name="username" placeholder="username">
-              <input type="submit" value="Submit">
-            </form>
-            <form action="/api/exercise/add" method="post">
-              <h3>Add exercises</h3>
-              <p><code>POST /api/exercise/add</code></p>
-              <input id="uid" type="text" name="userId" placeholder="userId*">
-              <input id="desc" type="text" name="description" placeholder="description*">
-              <input id="dur" type="text" name="duration" placeholder="duration* (mins.)">
-              <input id="dat" type="text" name="date" placeholder="date (yyyy-mm-dd)">
-              <input type="submit" value="Submit">
-            </form>
-            <p><strong>GET users's exercise log:
-              </strong><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code></p>
-            <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
-            <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
-          </div> -->
