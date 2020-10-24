@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const e = require('express');
 
-/* mongoose.Promise = global.Promise;
- */
 const app = express();
 const port = process.env.PORT || 5000;
 
