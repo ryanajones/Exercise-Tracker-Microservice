@@ -76,8 +76,12 @@ app.post('/api/exercise/new-user', async (req, res) => {
 
 // Response to add exercises POST
 app.post('/api/exercise/add', (req, res) => {
-  const { userId: _id, description, duration, date } = req.body;
+  const { userId: _id, description, duration } = req.body;
+  let { date } = req.body;
   // Handle date here
+  const regex = /-/;
+/*   date = date.replace(regex, '/');
+ */
   let modifiedDate;
   if (date) {
     modifiedDate = new Date(date).toDateString();
@@ -85,7 +89,6 @@ app.post('/api/exercise/add', (req, res) => {
     modifiedDate = new Date().toDateString();
   }
 
-  console.log(modifiedDate);
   const log = {
     description,
     duration: Number(duration),
@@ -134,18 +137,23 @@ app.get('/api/exercise/users', async (req, res) => {
 });
 
 app.get('/api/exercise/log?', async (req, res) => {
-  const { userId, from, to, limit } = req.query;
+  const { userId, limit } = req.query;
+  let { from, to } = req.query;
   try {
     const findOne = await ExerciseRecords.findOne({ _id: userId });
     if (findOne) {
       let { _id, username, log } = findOne;
       // Filter exercise log from certain date
       if (from) {
+        const regex = /-/;
+        from = from.replace(regex, '/');
         const fromDate = new Date(from);
         log = log.filter((el) => el.date >= fromDate);
       }
       // Filter exercise log to certain date
       if (to) {
+        const regex = /-/;
+        to = to.replace(regex, '/');
         const toDate = new Date(to);
         log = log.filter((el) => el.date <= toDate);
       }
