@@ -12,7 +12,7 @@ HTML SCSS JavaScript NodeJS ExpressJS MongoDB Mongoose
 
 ## Deploy on Repl
 
-https://repl.it/@ryanajones/URL-Shortener-Microservice#README.md
+https://repl.it/@ryanajones/Exercise-Tracker-Microservice#README.md
 
 ## Screenshot
 
