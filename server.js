@@ -10,8 +10,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // MongoDB and mongoose connect
-process.env.MONGO_URI =
-  'mongodb+srv://rjonesy91:Rjwowz!1991@fcc.zypnf.mongodb.net/fcc?retryWrites=true&w=majority';
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -80,8 +78,7 @@ app.post('/api/exercise/add', (req, res) => {
   let { date } = req.body;
   // Handle date here
   const regex = /-/;
-/*   date = date.replace(regex, '/');
- */
+
   let modifiedDate;
   if (date) {
     modifiedDate = new Date(date).toDateString();
