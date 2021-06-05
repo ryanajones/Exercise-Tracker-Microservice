@@ -1,10 +1,6 @@
 # Exercise Tracker Microservice
 
-Create a new user by submitting a username. In return, a JSON response containing an ID to save for adding an exercise entry will be displayed to the screen.
-
-Add an exercise entry by passing the given user ID into the userId form field. Add a description, duration, and an optional date for the exercise. Pressing the submit button will submit it to the database and return a JSON response of the information entered.
-
-Next step is to receive information from the database about the desired exercise logs by typing query string parameters into the URL. Directions and examples on how to do that is on the user interface.
+Create a new user and use the returned JSON userID number to add exercise logs. Examples on the UI show how to use the address bar's query string parameters to retrieve exercise log information. NodeJS and ExpressJS are used to create a RESTful API to handle front-end HTTP method requests. MongooseJS communicates with MongoDB to create and read exercise information in the database.  
 
 ## Technologies Used
 
